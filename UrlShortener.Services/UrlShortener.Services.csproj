@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UrlShortener.ObjectModel\UrlShortener.ObjectModel.csproj" />
+    <ProjectReference Include="..\UrlShortenerDataAccess\UrlShortenerDataAccess.csproj" />
   </ItemGroup>
 
 </Project>

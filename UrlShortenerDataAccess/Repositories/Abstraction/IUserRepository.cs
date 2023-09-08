@@ -10,5 +10,6 @@ namespace UrlShortenerDataAccess.Repositories.Abstraction
     public interface IUserRepository
     {
         Task Create(User user);
+        Task<User> GetByEmail(string email);
     }
 }

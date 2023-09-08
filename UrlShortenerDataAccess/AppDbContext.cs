@@ -6,6 +6,8 @@ namespace UrlShortener.DataAccess
 {
     public class AppDbContext : DbContext
     {
+        public DbSet<User> Users { get; set; } = null!;
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
             Database.EnsureCreated();
@@ -13,7 +15,7 @@ namespace UrlShortener.DataAccess
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-        
+            
         }
     }
 }
