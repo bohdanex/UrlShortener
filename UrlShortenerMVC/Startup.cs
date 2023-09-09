@@ -31,8 +31,6 @@ namespace UrlShortenerMVC
 
             services.AddControllersWithViews();
             services.AddMvc();
-            
-            
 
             services.AddSpaStaticFiles(configuration =>
             {
@@ -51,7 +49,6 @@ namespace UrlShortenerMVC
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-            
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
