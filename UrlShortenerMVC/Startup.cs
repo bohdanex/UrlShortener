@@ -31,7 +31,8 @@ namespace UrlShortenerMVC
 
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddMvc();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(c => c.TokenValidationParameters = new TokenValidationParameters()
@@ -76,7 +77,7 @@ namespace UrlShortenerMVC
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "api/{controller}/{action=Index}/{id?}");
+                    pattern: "api/{controller=urlshortener}/{action=Index}/{id?}");
             });
             
             app.UseSpa(spa =>

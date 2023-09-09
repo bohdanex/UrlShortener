@@ -5,16 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using UrlShortener.ObjectModel.UriModels;
 
-namespace UrlShortenerDataAccess.Repositories.Abstraction
+namespace UrlShortener.Services.Abstraction
 {
-    public interface IUrlRepository
+    public interface IBaseUrlService
     {
         Task<IEnumerable<BaseUrl>> GetAll();
         Task<BaseUrl> GetById(Guid id);
-        Task<BaseUrl> GetByOriginalUrl(string originalUrl);
-        Task<BaseUrl> GetByEncryptedUrl(string shortenedUrl);
+        Task<BaseUrl> GetByUrl(string url);
+        Task<BaseUrl> GetByShortenedUrl(string url);
         Task Create(BaseUrl baseUrl);
-        Task Delete(BaseUrl baseUrl);
-        Task Delete(Guid id);
+        Task Delete(BaseUrl baseUrl); 
+        Task Delete(Guid id); 
     }
 }

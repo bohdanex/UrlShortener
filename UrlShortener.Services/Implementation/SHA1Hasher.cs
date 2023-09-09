@@ -19,7 +19,7 @@ namespace UrlShortener.Services
                 using (Stream stream = new MemoryStream(urlAsByteArray))
                 {
                     byte[] result = await sha1.ComputeHashAsync(stream);
-                    return Convert.ToHexString(result);
+                    return Convert.ToBase64String(result);
                 }
             }
         }

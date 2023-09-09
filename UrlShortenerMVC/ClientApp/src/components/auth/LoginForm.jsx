@@ -1,8 +1,8 @@
 import React, { RefObject } from "react";
 import {Form, FormFeedback, FormGroup, Input, Button, Label, Row, Col, NavLink, NavItem} from 'reactstrap'
 import { login } from './authActions'
-import { UserAuth, AuthResponse } from "../../types/User";
-import { ErrorResponse } from "../../types/Response";
+import { UserAuth, AuthResponse } from "../../types/Users";
+import { ErrorResponse } from "../../types/Responses";
 import { createRef } from "react";
 import Notifications from "../../services/notificationService";
 const notifications = new Notifications(); 

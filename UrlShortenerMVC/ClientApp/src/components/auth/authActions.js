@@ -1,6 +1,6 @@
 import storage from 'react-secure-storage'
-import {UserAuth, User, AuthResponse} from '../../types/User'
-import { ErrorResponse } from '../../types/Response';
+import {UserAuth, User, AuthResponse} from '../../types/Users'
+import { ErrorResponse } from '../../types/Responses';
 
 export async function getUser(): Promise<User | null>{
     const jwt = storage.getItem('jwt');

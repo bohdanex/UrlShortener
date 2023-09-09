@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using UrlShortener.ObjectModel;
 using UrlShortener.ObjectModel.DTO;
+using UrlShortener.ObjectModel.UriModels;
 
 namespace UrlShortenerMVC
 {
@@ -9,6 +10,8 @@ namespace UrlShortenerMVC
         public AutoMapperConfig()
         {
             CreateMap<User, UserAuthModel>().ReverseMap();
+            CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<BaseUrl, UrlDTO>().ReverseMap();
         }
     }
 }

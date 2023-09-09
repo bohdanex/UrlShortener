@@ -103,7 +103,7 @@ namespace UrlShortenerMVC.Controllers
 
         private static string GenerateAccessToken(User user)
         {
-            var claims = new List<Claim> { new("id", user.Id.ToString()), new(ClaimTypes.Role, user.Role.ToString("d")) };
+            var claims = new List<Claim> { new(ClaimTypes.NameIdentifier, user.Id.ToString()), new(ClaimTypes.Role, user.Role.ToString("d")) };
 
             var jwt = new JwtSecurityToken(
                     issuer: AuthOptions.ISSUER,
@@ -112,6 +112,23 @@ namespace UrlShortenerMVC.Controllers
                     expires: DateTime.UtcNow.Add(TimeSpan.FromHours(2)),
                     signingCredentials: new SigningCredentials(AuthOptions.SymmetricSecurityKey, SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwt);
+        }
+
+        [Route("register-admin")]
+        [HttpPost]
+        public async Task<IActionResult> RegisterAdmin(UserAuthModel userAuthModel)
+        {
+            var actionResult = ValidateRegistration(userAuthModel);
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
+            User createdUser = await CreateUserWithHashedPassword(userAuthModel);
+            createdUser.Role = Role.Admin;
+            string accessToken = GenerateAccessToken(createdUser);
+
+            return Json(new AuthResponse(accessToken));
         }
     }
 }

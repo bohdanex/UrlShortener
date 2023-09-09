@@ -1,7 +1,7 @@
 import React, { RefObject, isValidElement } from "react";
 import {Form, FormFeedback, FormGroup, Input, Button, Label, Row, Col, ButtonGroup} from 'reactstrap'
 import { register } from './authActions'
-import { UserAuth } from "../../types/User";
+import { UserAuth } from "../../types/Users";
 import { createRef } from "react";
 import { withRouter } from 'react-router-dom';
 type Props = {
