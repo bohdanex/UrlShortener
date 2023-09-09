@@ -2,7 +2,7 @@
 
 namespace UrlShortener.Services.Abstraction
 {
-    public interface IUrlHasher
+    public interface IUrlHasherService
     {
         Task<string> Hash(string url);
     }

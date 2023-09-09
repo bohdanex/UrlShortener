@@ -7,7 +7,7 @@ namespace UrlShortenerMVC
     {
         public const string ISSUER = "localhost";
         public const string AUDIENCE = "localhost2";
-        const string KEY = "INFORCE <3";
+        const string KEY = "___ INFORCE <3 ___";
         public static SymmetricSecurityKey SymmetricSecurityKey => new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
     }
 }

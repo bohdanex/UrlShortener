@@ -1,6 +1,6 @@
 {
-  "short_name": "UrlShortenerMVC",
-  "name": "UrlShortenerMVC",
+  "short_name": "ClientApp",
+  "name": "ClientApp",
   "icons": [
     {
       "src": "favicon.ico",

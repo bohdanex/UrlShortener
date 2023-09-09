@@ -7,7 +7,7 @@ using UrlShortener.Services.Abstraction;
 
 namespace UrlShortener.Services
 {
-    public class ASCIIUrlHasher : IUrlHasher
+    public class ASCIIUrlHasher : IUrlHasherService
     {
         public Task<string> Hash(string url)
         {

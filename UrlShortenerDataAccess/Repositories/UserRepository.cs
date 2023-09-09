@@ -19,7 +19,7 @@ namespace UrlShortenerDataAccess.Repositories
             this.context = context;   
         }
 
-        public async Task Create(User user)
+        public async Task<User> Create(User user)
         {
             if(user.Id == Guid.Empty)
             {
@@ -27,6 +27,7 @@ namespace UrlShortenerDataAccess.Repositories
             }
             context.Users.Add(user);
             await context.SaveChangesAsync();
+            return user;
         }
 
         public async Task<User> GetByEmail(string email)

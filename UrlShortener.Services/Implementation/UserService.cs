@@ -1,9 +1,11 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UrlShortener.ObjectModel;
+using UrlShortener.ObjectModel.DTO;
 using UrlShortener.Services.Abstraction;
 using UrlShortenerDataAccess.Repositories.Abstraction;
 
@@ -18,9 +20,9 @@ namespace UrlShortener.Services.Implementation
             this.userRepository = userRepository;
         }
 
-        public async Task Create(User user)
+        public async Task<User> Create(User user)
         {
-            await userRepository.Create(user);
+            return await userRepository.Create(user);
         }
 
         public async Task<User> GetByEmail(string email)
