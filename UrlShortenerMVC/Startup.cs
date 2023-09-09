@@ -10,7 +10,8 @@ using UrlShortener.DataAccess;
 using UrlShortener.Services;
 using UrlShortener.ObjectModel;
 using Microsoft.AspNetCore.Identity;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 namespace UrlShortenerMVC
 {
     public class Startup
@@ -24,14 +25,26 @@ namespace UrlShortenerMVC
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ShortUrlsBase")));
+            services.AddDbContext<AppDbContext>(opt => opt.UseLazyLoadingProxies()
+                                                            .UseSqlServer(Configuration.GetConnectionString("ShortUrlsBase")));
             services.InjectAllServices();
 
             services.AddAutoMapper(typeof(Startup));
 
             services.AddControllersWithViews();
             services.AddMvc();
-
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(c => c.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = AuthOptions.ISSUER,
+                    ValidateAudience = true,
+                    ValidAudience = AuthOptions.AUDIENCE,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = AuthOptions.SymmetricSecurityKey,
+                    ValidateLifetime = true
+                });
+            services.AddAuthorization();
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";

@@ -1,11 +1,11 @@
 import React, { RefObject, isValidElement } from "react";
-import {Form, FormFeedback, FormGroup, Input, Button, Label, Row, Col, NavLink, NavItem} from 'reactstrap'
-import { register } from './loginActions'
+import {Form, FormFeedback, FormGroup, Input, Button, Label, Row, Col, ButtonGroup} from 'reactstrap'
+import { register } from './authActions'
 import { UserAuth } from "../../types/User";
 import { createRef } from "react";
-
+import { withRouter } from 'react-router-dom';
 type Props = {
-
+    
 }
 
 type State = {
@@ -16,7 +16,7 @@ type State = {
     isPasswordMatch: Boolean
 }
 
-export default class LoginForm extends React.Component<Props, State>{
+class LoginForm extends React.Component<Props, State>{
     constructor(props){
         super(props);
 
@@ -70,7 +70,7 @@ export default class LoginForm extends React.Component<Props, State>{
             <Input type="email" 
                 innerRef={this.emailInputRef}
                 id="email"
-                placeholder="email"
+                placeholder="example@mail.com"
                 valid={this.state.isValidEmail}
                 invalid={this.state.isValidEmail === false}/>
             {this.state.isValidEmail === true && <FormFeedback>Email provided</FormFeedback>}
@@ -95,17 +95,16 @@ export default class LoginForm extends React.Component<Props, State>{
                 {this.state.isPasswordMatch === false && <FormFeedback>Passwords do not match!</FormFeedback>}
          </FormGroup>
          <FormGroup>
-           
-             <Row>
-                <Col> 
-                    <Button type="button" color="success"
-                    onClick={this.register.bind(this)}>Register</Button>
-                </Col>
-                <Col>
-                    
-                </Col>
-             </Row>
+            <Button type="button" color="success"
+                onClick={this.register.bind(this)}>Register</Button>
+         </FormGroup>
+         <FormGroup>
+            <Button color="link" onClick={() => this.props.history.push('/login')}>
+            Already have an account?
+            </Button>
          </FormGroup>
         </Form>);
     }
 }
+
+export default withRouter(LoginForm);

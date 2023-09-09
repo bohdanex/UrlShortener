@@ -44,6 +44,7 @@ namespace UrlShortenerMVC.Controllers
             }
 
             User createdUser = await CreateUserWithHashedPassword(userAuthModel);
+            createdUser.Role = Role.User;
             string accessToken = GenerateAccessToken(createdUser);
             
             return Json(new AuthResponse(accessToken));            
@@ -102,7 +103,7 @@ namespace UrlShortenerMVC.Controllers
 
         private static string GenerateAccessToken(User user)
         {
-            var claims = new List<Claim> { new("id", user.Id.ToString()), new("role", user.Role.ToString()) };
+            var claims = new List<Claim> { new("id", user.Id.ToString()), new(ClaimTypes.Role, user.Role.ToString("d")) };
 
             var jwt = new JwtSecurityToken(
                     issuer: AuthOptions.ISSUER,

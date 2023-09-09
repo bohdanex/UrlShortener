@@ -4,8 +4,9 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Counter } from './components/Counter';
 import RegisterForm from './components/auth/RegisterForm';
-
+import LoginForm from './components/auth/LoginForm';
 import './custom.css'
+
 
 export default class App extends Component {
   static displayName = App.name;
@@ -15,7 +16,7 @@ export default class App extends Component {
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/register' component={RegisterForm} />
-        <Route path='/login' component={RegisterForm} />
+        <Route path='/login' component={LoginForm} />
       </Layout>
     );
   }

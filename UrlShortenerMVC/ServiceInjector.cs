@@ -11,7 +11,7 @@ namespace UrlShortenerMVC
     {
         public static void InjectAllServices(this IServiceCollection services)
         {
-            services.AddSingleton<IUrlHasherService, ASCIIUrlHasher>();
+            services.AddSingleton<IUrlHasherService, SHA1Hasher>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<ISecurityService, SecurityService>();
