@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -18,19 +21,28 @@ namespace UrlShortenerMVC.Controllers
     [Route("api/[controller]")]
     public class UrlShortenerController : Controller
     {
+        const int PAGE_SIZE = 10;
         private readonly IBaseUrlService baseUrlService;
+        private readonly IMapper mapper;
 
-        public UrlShortenerController(IBaseUrlService baseUrlService)
+        public UrlShortenerController(IBaseUrlService baseUrlService, IMapper mapper)
         {
             this.baseUrlService = baseUrlService;
+            this.mapper = mapper;
         }
-
+        /// <summary>
+        /// Gets all urls with step of page size (currently 10)
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
-        [Route("getAll")]
-        public async Task<IActionResult> GetAll()
+        [Route("get-all/{page:int?}")]
+        public async Task<IActionResult> GetAll(int? page)
         {
-            return Json(await baseUrlService.GetAll());
+            var allUrls = await baseUrlService.GetAll(page.GetValueOrDefault(), PAGE_SIZE);
+            IEnumerable<SimpleUrlDTO> allUrlDTOs = mapper.Map<IEnumerable<BaseUrl>, IEnumerable<SimpleUrlDTO>>(allUrls);
+            return Json(allUrlDTOs);
         }
 
         [HttpPost]
@@ -49,7 +61,7 @@ namespace UrlShortenerMVC.Controllers
             return StatusCode((int)HttpStatusCode.Accepted);
         }
 
-        [HttpGet("/rd/{shortenedUrl}")]
+        [HttpGet("/r/{shortenedUrl}")]
         [AllowAnonymous]
         public async Task<IActionResult> Index(string shortenedUrl)
         {

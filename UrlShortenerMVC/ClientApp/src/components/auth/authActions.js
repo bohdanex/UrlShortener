@@ -11,7 +11,7 @@ export async function getUser(): Promise<User | null>{
         method: 'get',
         headers:{
             "Authorization": "Bearer " + jwt,
-            "Content-Type": "application/json; encoding-utf8"
+            "Accept": "application/json; encoding-utf8"
         }
     });
     
@@ -24,7 +24,7 @@ export async function login(user: UserAuth): Promise<AuthResponse | ErrorRespons
     {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Accept": "application/json"
         },
         body: userJson
     });
@@ -43,7 +43,7 @@ export async function register(user: UserAuth): Promise<boolean> {
     {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Accept": "application/json"
         },
         body: userJson
     });

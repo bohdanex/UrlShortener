@@ -12,6 +12,7 @@ namespace UrlShortenerMVC
             CreateMap<User, UserAuthModel>().ReverseMap();
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<BaseUrl, UrlDTO>().ReverseMap();
+            CreateMap<BaseUrl, SimpleUrlDTO>().ReverseMap();
         }
     }
 }

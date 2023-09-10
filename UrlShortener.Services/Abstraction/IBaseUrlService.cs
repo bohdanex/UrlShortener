@@ -9,6 +9,7 @@ namespace UrlShortener.Services.Abstraction
 {
     public interface IBaseUrlService
     {
+        Task<IEnumerable<BaseUrl>> GetAll(int page, int pageSize);
         Task<IEnumerable<BaseUrl>> GetAll();
         Task<BaseUrl> GetById(Guid id);
         Task<BaseUrl> GetByUrl(string url);

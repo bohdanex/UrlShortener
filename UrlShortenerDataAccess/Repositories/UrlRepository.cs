@@ -43,11 +43,18 @@ namespace UrlShortenerDataAccess.Repositories
             }
         }
 
+        public async Task<IEnumerable<BaseUrl>> GetAll(int page, int pageSize)
+        {
+            return await appDbContext.BaseURLs
+                .OrderByDescending(x => x.CreationDate)
+                .Skip(page * pageSize)
+                .Take(pageSize)
+                .ToArrayAsync();
+        }
         public async Task<IEnumerable<BaseUrl>> GetAll()
         {
-            return await appDbContext.BaseURLs.ToArrayAsync();
+            return await appDbContext.BaseURLs.OrderByDescending(x => x.CreationDate).ToArrayAsync();
         }
-
         public async Task<BaseUrl> GetByEncryptedUrl(string shortenedUrl)
         {
             return await appDbContext.BaseURLs.FirstOrDefaultAsync(x => x.ShortenedURL == shortenedUrl);

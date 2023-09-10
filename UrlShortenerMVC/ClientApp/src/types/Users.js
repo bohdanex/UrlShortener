@@ -3,9 +3,10 @@ export class UserAuth{
     password: string = '';
 }
 
-export type User = {
-    email: string,
-    role: Role
+export class User{
+    id: string;
+    email: string;
+    role: Role;
 }
 
 export class Role {

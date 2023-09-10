@@ -46,11 +46,14 @@ namespace UrlShortener.Services.Implementation
             await urlRepository.Delete(id);
         }
 
+        public async Task<IEnumerable<BaseUrl>> GetAll(int page, int pageSize)
+        {
+           return await urlRepository.GetAll(page, pageSize);
+        }
         public async Task<IEnumerable<BaseUrl>> GetAll()
         {
-           return await urlRepository.GetAll();
+            return await urlRepository.GetAll();
         }
-
         public async Task<BaseUrl> GetById(Guid id)
         {
             return await urlRepository.GetById(id);
