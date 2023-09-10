@@ -2,6 +2,7 @@ import { User } from "./Users";
 
 export class TableUrl{
     id: String;
+    userId: String;
     originalURL: String;
     shortenedURL: String;
     creationDate: Date;

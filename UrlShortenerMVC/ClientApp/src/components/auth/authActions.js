@@ -1,10 +1,11 @@
-import storage from 'react-secure-storage'
 import {UserAuth, User, AuthResponse} from '../../types/Users'
 import { ErrorResponse } from '../../types/Responses';
-import {JWT_STORAGE_KEY} from '../../constants/'
+import { getJWT } from '../../services/storageService';
+import storage from 'react-secure-storage'
+import { JWT_STORAGE_KEY } from '../../constants';
 
 export async function getUser(): Promise<User | null>{
-    const jwt = storage.getItem(JWT_STORAGE_KEY);
+    const jwt = getJWT();
     if(jwt == null){
         return null;
     }
@@ -60,7 +61,6 @@ export async function register(user: UserAuth): Promise<boolean> {
 export async function getUserInfo(accessToken: string): Promise<User>{
     const url = 'api/account/get-user-info';
     try{
-        console.log(accessToken)
         const response = await fetch(url, {
             method: 'POST',
             headers:{

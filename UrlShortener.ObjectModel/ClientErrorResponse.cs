@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace UrlShortener.ObjectModel
 {
-    public class ErrorResponseModel
+    public class ClientErrorResponse
     {
         public string ErrorMessage { get; set; }
-        public ErrorResponseModel()
+        public ClientErrorResponse()
         {
             
         }
-        public ErrorResponseModel(string errorMessage)
+        public ClientErrorResponse(string errorMessage)
         {
             ErrorMessage = errorMessage;
         }

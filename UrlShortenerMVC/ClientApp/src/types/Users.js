@@ -9,9 +9,9 @@ export class User{
     role: Role;
 }
 
-export class Role {
-    User = 0;
-    Admin = 1;
+export const Role = {
+    User: 0,
+    Admin: 1
 }
 
 export type AuthResponse = {

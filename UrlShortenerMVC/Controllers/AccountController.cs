@@ -66,11 +66,11 @@ namespace UrlShortenerMVC.Controllers
             bool isValidEmail = MailAddress.TryCreate(userAuthModel.Email, out _);
             if (!isValidEmail)
             {
-                return StatusCode((int)HttpStatusCode.BadRequest, new ErrorResponseModel("Not valid email"));
+                return StatusCode((int)HttpStatusCode.BadRequest, new ClientErrorResponse("Not valid email"));
             }
             if (!IsValidPassword(userAuthModel.Password))
             {
-                return StatusCode((int)HttpStatusCode.BadRequest, new ErrorResponseModel("Not valid password"));
+                return StatusCode((int)HttpStatusCode.BadRequest, new ClientErrorResponse("Not valid password"));
             }
 
             return null;
@@ -92,13 +92,13 @@ namespace UrlShortenerMVC.Controllers
             User user = await userService.GetByEmail(userAuthModel.Email);
             if (user == null)
             {
-                return StatusCode((int)HttpStatusCode.Unauthorized, new ErrorResponseModel("User not found"));
+                return StatusCode((int)HttpStatusCode.Unauthorized, new ClientErrorResponse("User not found"));
             }
 
             string salt = user.Salt;
             if (!securityService.CheckPasswordIdentity(userAuthModel.Password, salt, user.SaltedHashedPassword))
             {
-                return StatusCode((int)HttpStatusCode.Unauthorized, new ErrorResponseModel("User not found"));
+                return StatusCode((int)HttpStatusCode.Unauthorized, new ClientErrorResponse("User not found"));
             }
             
             return Json(new AuthResponse(GenerateAccessToken(user)));
@@ -147,7 +147,7 @@ namespace UrlShortenerMVC.Controllers
             User user = await userService.GetById(id);
             if(user == null)
             {
-                return StatusCode(500, new ErrorResponseModel("User not found"));
+                return StatusCode(500, new ClientErrorResponse("User not found"));
             }
             UserDTO userDTO = mapper.Map<User, UserDTO>(user);
             return Json(userDTO);

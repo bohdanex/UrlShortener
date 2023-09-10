@@ -5,14 +5,13 @@ import './NavMenu.css';
 import { Dispatch } from 'redux';
 import {JWT_STORAGE_KEY} from '../constants'
 import { RootState } from '../store'
-import {addUser} from '../store/features/userSlice'
+import {addUser,remove} from '../store/features/userSlice'
 import { connect } from 'react-redux';
-import { User } from '../types/Users';
+import { Role, User } from '../types/Users';
 import { getUserInfo } from './auth/authActions'
 import storage from 'react-secure-storage'
 
 type Props = {
-  dispatch: Dispatch,
   user: User
 }
 
@@ -30,8 +29,8 @@ class NavMenu extends Component<Props> {
     const accessToken = storage.getItem(JWT_STORAGE_KEY);
     if(accessToken != null){
       try{
-        user = await getUserInfo(accessToken);
-        this.props.dispatch(addUser(user))
+        const user = await getUserInfo(accessToken);
+        this.props.addUser(user)
       }
       catch(error){
       }
@@ -56,12 +55,24 @@ class NavMenu extends Component<Props> {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/register">Register</NavLink>
-                </NavItem>
+                {this.props.user == null 
+                ? 
+                  <>
+                      <NavItem>
+                        <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink tag={Link} className="text-dark" to="/register">Register</NavLink>
+                      </NavItem>
+                  </>
+                :<NavItem>
+                  <NavLink className="text-dark btn"
+                    
+                  onClick={() => {
+                    storage.removeItem(JWT_STORAGE_KEY);
+                    this.props.remove();
+                  }}>Logout</NavLink>
+                </NavItem>}
               </ul>
             </Collapse>
           </Container>
@@ -73,5 +84,9 @@ class NavMenu extends Component<Props> {
 const mapStateToProps = (state: RootState) => ({
   user: state.user.user
 });
+const mapDispatchToProps = {
+  addUser,
+  remove
+};
 
-export default connect(mapStateToProps, {addUser})(NavMenu)
+export default connect(mapStateToProps, mapDispatchToProps)(NavMenu)

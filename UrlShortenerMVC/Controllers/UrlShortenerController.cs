@@ -33,8 +33,7 @@ namespace UrlShortenerMVC.Controllers
         /// <summary>
         /// Gets all urls with step of page size (currently 10)
         /// </summary>
-        /// <param name="page"></param>
-        /// <returns></returns>
+        /// <param name="page">Current page</param>
         [AllowAnonymous]
         [HttpGet]
         [Route("get-all/{page:int?}")]
@@ -45,6 +44,24 @@ namespace UrlShortenerMVC.Controllers
             return Json(allUrlDTOs);
         }
 
+        /// <summary>
+        /// Gets a url by its id
+        /// </summary>
+        [HttpGet]
+        [Route("get/{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var url = await baseUrlService.GetById(id);
+            if(url == null)
+            {
+                return StatusCode(400, new ClientErrorResponse("Not found"));
+            }
+            return Json(url);
+        }
+
+        /// <summary>
+        /// Creates a new shortened url
+        /// </summary>
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> CreateUrl(CreateUrlDTO baseUrlDTO)
@@ -52,15 +69,20 @@ namespace UrlShortenerMVC.Controllers
             var urlFromDb = await baseUrlService.GetByUrl(baseUrlDTO.URL);
             if(urlFromDb != null)
             {
-                return StatusCode(400, new ErrorResponseModel("This url is already created"));
+                return StatusCode(400, new ClientErrorResponse("This url is already created"));
             }
             BaseUrl url = new BaseUrl();
             url.OriginalURL = baseUrlDTO.URL;
             url.UserId = User.GetId();
-            await baseUrlService.Create(url);
-            return StatusCode((int)HttpStatusCode.Accepted);
+            var createdUrl = await baseUrlService.Create(url);
+            SimpleUrlDTO simpleCreatedUrl = mapper.Map<BaseUrl, SimpleUrlDTO>(createdUrl);
+            return Json(simpleCreatedUrl);
         }
 
+        /// <summary>
+        /// Redirect to full url
+        /// </summary>
+        /// <param name="shortenedUrl">Short url created by URLShortener service</param>
         [HttpGet("/r/{shortenedUrl}")]
         [AllowAnonymous]
         public async Task<IActionResult> Index(string shortenedUrl)
@@ -71,6 +93,28 @@ namespace UrlShortenerMVC.Controllers
                 return Redirect("~/");
             }
             return new RedirectResult(redirectUrl.OriginalURL);
+        }
+
+
+        /// <summary>
+        /// Deletes a url by its id
+        /// </summary>
+        /// <param name="id">Shortened url id</param>
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            BaseUrl url = await baseUrlService.GetById(id);
+            if(url == null)
+            {
+                return StatusCode(400, new ClientErrorResponse("URL not found"));
+            }
+            if(User.GetRole() == Role.User && url.User.Id != User.GetId())
+            {
+                return StatusCode(400, new ClientErrorResponse("No rights for this action"));
+            }
+            await baseUrlService.Delete(url);
+            return StatusCode((int)HttpStatusCode.OK);
         }
     }
 }

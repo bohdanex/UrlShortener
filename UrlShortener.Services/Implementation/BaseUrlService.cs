@@ -20,9 +20,10 @@ namespace UrlShortener.Services.Implementation
             this.urlHasherService = urlHasherService;
         }
 
-        public async Task Create(BaseUrl baseUrl)
+        public async Task<BaseUrl> Create(BaseUrl baseUrl)
         {
             baseUrl.CreationDate = DateTime.Now;
+            baseUrl.Id = Guid.NewGuid();
             while (String.IsNullOrEmpty(baseUrl.ShortenedURL))
             {
                 string hash = await urlHasherService.Hash(baseUrl.OriginalURL);
@@ -34,6 +35,7 @@ namespace UrlShortener.Services.Implementation
             }
 
             await urlRepository.Create(baseUrl);
+            return baseUrl;
         }
 
         public async Task Delete(BaseUrl baseUrl)

@@ -14,7 +14,7 @@ namespace UrlShortener.Services.Abstraction
         Task<BaseUrl> GetById(Guid id);
         Task<BaseUrl> GetByUrl(string url);
         Task<BaseUrl> GetByShortenedUrl(string url);
-        Task Create(BaseUrl baseUrl);
+        Task<BaseUrl> Create(BaseUrl baseUrl);
         Task Delete(BaseUrl baseUrl); 
         Task Delete(Guid id); 
     }
