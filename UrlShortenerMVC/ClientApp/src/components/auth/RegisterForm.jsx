@@ -40,7 +40,11 @@ class LoginForm extends React.Component<Props, State>{
         const user = new UserAuth();
         user.email = this.emailInputRef.current.value;
         user.password = this.passwordInputRef.current.value;
-        this.validateInputs(async () => { console.log(await register(user));});
+        this.validateInputs(async () => { 
+            if(await register(user)){ 
+                location.assign('/');
+            }
+        });
     }
     validateInputs(callback:? Function){
         const state = this.state;

@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortenerMVC.UnitTests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortenerMVC", "UrlShortenerMVC\UrlShortenerMVC.csproj", "{8722AB82-DE58-4DBC-AED3-D3E6F9859102}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlShortener.ObjectModel", "UrlShortener.ObjectModel\UrlShortener.ObjectModel.csproj", "{7F125A2A-9279-4A53-9E42-5894C1FFB57A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.ObjectModel", "UrlShortener.ObjectModel\UrlShortener.ObjectModel.csproj", "{7F125A2A-9279-4A53-9E42-5894C1FFB57A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlShortener.Services", "UrlShortener.Services\UrlShortener.Services.csproj", "{C8B1FF15-9F7B-497A-8530-A4A9574C0846}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.Services", "UrlShortener.Services\UrlShortener.Services.csproj", "{C8B1FF15-9F7B-497A-8530-A4A9574C0846}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlShortenerDataAccess", "UrlShortenerDataAccess\UrlShortenerDataAccess.csproj", "{5A36A433-EF22-4370-B234-E661645DBCFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortenerDataAccess", "UrlShortenerDataAccess\UrlShortenerDataAccess.csproj", "{5A36A433-EF22-4370-B234-E661645DBCFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -14,7 +14,7 @@ namespace UrlShortener.Services
                 byte[] urlAsByteArray = System.Text.Encoding.ASCII.GetBytes(url);
                 MD5 md5 = MD5.Create();
                 byte[] hash = md5.ComputeHash(urlAsByteArray);
-                return Convert.ToHexString(hash);
+                return Convert.ToBase64String(hash);
             });
         }
     }

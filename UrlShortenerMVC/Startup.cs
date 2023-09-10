@@ -27,13 +27,13 @@ namespace UrlShortenerMVC
         {
             services.AddDbContext<AppDbContext>(opt => opt.UseLazyLoadingProxies()
                                                             .UseSqlServer(Configuration.GetConnectionString("ShortUrlsBase")));
-            services.InjectAllServices();
+            services.InjectCustomServices();
 
             services.AddAutoMapper(typeof(Startup));
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            services.AddMvc();
+            services.AddMvcCore();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(c => c.TokenValidationParameters = new TokenValidationParameters()
                 {
@@ -77,7 +77,7 @@ namespace UrlShortenerMVC
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "api/{controller=urlshortener}/{action=Index}/{id?}");
+                    pattern: "api/{controller=urlshortener}/{action=About}/{id?}");
             });
             
             app.UseSpa(spa =>

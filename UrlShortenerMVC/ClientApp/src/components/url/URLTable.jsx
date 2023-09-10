@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import { Table } from "reactstrap";
+import { Button, Table } from "reactstrap";
 import { TableUrl } from "../../types/UrlTypes";
 import { User, Role } from "../../types/Users";
 import moment from 'moment'
-import {RxTrash} from 'react-icons/rx'
+import {RxTrash, RxIdCard} from 'react-icons/rx'
 
 type Props = {
     urls: Array<TableUrl>,
@@ -23,8 +23,14 @@ export default class URLTable extends Component<Props>{
     }
     renderUrl = (url: TableUrl, index: number) => {
         return (<tr key={index}>
-            <td><a href={url.originalURL}>{url.shortenedURL}</a></td>
-            <td><a href={url.originalURL}>{url.originalURL}</a></td>
+            <td><a className="btn btn-link" href={url.originalURL}>{url.shortenedURL}</a>
+            {' '}
+            {this.props.profile != null && this.props.profile.role != null && 
+            <Button color="link" onClick={() => location.assign('/url/'+url.id)}>
+                More 
+            </Button>}
+            </td>
+            <td><a className="btn btn-link" href={url.originalURL}>{url.originalURL}</a></td>
             <td>{moment(url.creationDate).format('lll')}</td>
             <td>{this.renderDeleteButton(url)}</td>
         </tr>);

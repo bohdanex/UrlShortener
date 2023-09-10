@@ -9,10 +9,10 @@ namespace UrlShortenerMVC
 {
     public static class ServiceInjector
     {
-        public static void InjectAllServices(this IServiceCollection services)
+        public static void InjectCustomServices(this IServiceCollection services)
         {
             //Singleton services
-            services.AddSingleton<IUrlHasherService, SHA1Hasher>();
+            services.AddSingleton<IUrlHasherService, Crc32Hasher>();
             services.AddSingleton<ISecurityService, SecurityService>();
 
             //Scoped services

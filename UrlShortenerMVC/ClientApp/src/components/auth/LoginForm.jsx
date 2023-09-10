@@ -44,6 +44,7 @@ export default class LoginForm extends React.Component<Props, State>{
         }
         else{
             notifications.success("Succesfully logged in")
+            location.assign('/');
         }
     }
 
@@ -67,9 +68,6 @@ export default class LoginForm extends React.Component<Props, State>{
                 <Col> 
                     <Button type="button" color="success"
                     onClick={this.login.bind(this)}>Login</Button>
-                </Col>
-                <Col>
-                    
                 </Col>
              </Row>
          </FormGroup>

@@ -20,13 +20,13 @@ namespace UrlShortener.Services.Implementation
             this.urlHasherService = urlHasherService;
         }
 
-        public async Task<BaseUrl> Create(BaseUrl baseUrl)
+        public async Task<BaseUrl> Create(BaseUrl baseUrl, string domain)
         {
             baseUrl.CreationDate = DateTime.Now;
             baseUrl.Id = Guid.NewGuid();
             while (String.IsNullOrEmpty(baseUrl.ShortenedURL))
             {
-                string hash = await urlHasherService.Hash(baseUrl.OriginalURL);
+                string hash = domain + (await urlHasherService.Hash(baseUrl.OriginalURL));
                 var urlFromDb = await urlRepository.GetByEncryptedUrl(hash);
                 if(urlFromDb == null)
                 {

@@ -1,5 +1,5 @@
 import { ErrorResponse } from "../../types/Responses";
-import { TableUrl } from "../../types/UrlTypes";
+import { BaseUrl, TableUrl } from "../../types/UrlTypes";
 import { getJWT } from "../../services/storageService";
 
 export function getAll(page: number = 0): Promise<Array<TableUrl>>{
@@ -46,10 +46,28 @@ export async function addUrl(url: string): Promise<TableUrl | null>{
         if(!response.ok){
             throw new Error("Bad request")
         }
-        
+
         return await response.json();
     }
     catch(ex){
-        return ex;
+        throw ex;
     }
+}
+
+export async function getById(id: string): Promise<BaseUrl | ErrorResponse>{
+    const url = 'api/urlshortener/get/' + id;
+    const jwt = getJWT();
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + jwt,
+            "Content-Type": "application/json"
+        }
+    });
+    if(!response.ok){
+        const error: ErrorResponse = await response.json();
+        return error.errorMessage;
+    }
+
+    return await response.json();
 }

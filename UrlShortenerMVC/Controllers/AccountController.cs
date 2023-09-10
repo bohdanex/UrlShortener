@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using UrlShortenerMVC.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
+using UrlShortenerMVC.Extensions;
 
 namespace UrlShortenerMVC.Controllers
 {
