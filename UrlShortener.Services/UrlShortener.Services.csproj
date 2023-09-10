@@ -6,10 +6,12 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="Crc32.NET" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\UrlShortener.ObjectModel\UrlShortener.ObjectModel.csproj" />
+    <ProjectReference Include="..\UrlShortenerDataAccess\UrlShortenerDataAccess.csproj" />
   </ItemGroup>
 
 </Project>

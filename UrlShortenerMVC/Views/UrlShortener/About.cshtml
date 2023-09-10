@@ -1,0 +1,45 @@
+﻿@model UrlShortener.ObjectModel.DTO.AboutDTO;
+
+<header>
+    <h1>Information about url shortener API</h1>
+</header>
+<ht/>
+<main>
+    <p>
+        In this app is represented three types of url shortening algorythms:
+        <ol>
+            <li>SHA1 - produces a 160-bit hash value known as a message digest</li>
+            <li>MD5 - this hash is 128-bits long and is represented by 32 characters</li>
+            <li>The last one - Crc32. Can generate 32-bit values. Is more sensetive to collisions</li>
+        </ol>
+        Notice only hashing algorythms beeing used in this api.
+    </p>
+    @{
+        if (Model.IsAdmin)
+        {
+            <textarea id="add-text">
+                @Model.AdditionalText
+            </textarea>
+            <button data-submit>
+                submit
+            </button>
+        }
+        else
+        {
+            <p>@Model.AdditionalText</p>
+        }
+    }
+</main>
+
+<script>
+    const text = document.getElementById("add-text").value;
+    const button = document.querySelector("[data-submit]").addEventListener("click", () => {
+        fetch("api/about", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer "
+            },
+            body: text
+        });
+        )
+</script>

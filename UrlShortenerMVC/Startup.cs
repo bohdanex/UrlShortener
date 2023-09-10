@@ -10,7 +10,8 @@ using UrlShortener.DataAccess;
 using UrlShortener.Services;
 using UrlShortener.ObjectModel;
 using Microsoft.AspNetCore.Identity;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 namespace UrlShortenerMVC
 {
     public class Startup
@@ -22,21 +23,35 @@ namespace UrlShortenerMVC
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.InjectAllServices();
-            services.AddControllersWithViews();
-            services.AddMvc();
-            services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ShortUrlsBase")));
-            // In production, the React files will be served from this directory
+            services.AddDbContext<AppDbContext>(opt => opt.UseLazyLoadingProxies()
+                                                            .UseSqlServer(Configuration.GetConnectionString("ShortUrlsBase")));
+            services.InjectCustomServices();
+
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddMvcCore();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(c => c.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = AuthOptions.ISSUER,
+                    ValidateAudience = true,
+                    ValidAudience = AuthOptions.AUDIENCE,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = AuthOptions.SymmetricSecurityKey,
+                    ValidateLifetime = true
+                });
+            services.AddAuthorization();
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -48,7 +63,6 @@ namespace UrlShortenerMVC
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-            
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -63,7 +77,7 @@ namespace UrlShortenerMVC
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "api/{controller}/{action=Index}/{id?}");
+                    pattern: "api/{controller=urlshortener}/{action=About}/{id?}");
             });
             
             app.UseSpa(spa =>
