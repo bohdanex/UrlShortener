@@ -34,5 +34,10 @@ namespace UrlShortenerDataAccess.Repositories
         {
             return await context.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
+
+        public async Task<User> GetById(Guid id)
+        {
+            return await context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

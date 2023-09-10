@@ -12,6 +12,9 @@ using System.Net;
 using AutoMapper;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
+using UrlShortenerMVC.Attributes;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UrlShortenerMVC.Controllers
 {
@@ -129,6 +132,25 @@ namespace UrlShortenerMVC.Controllers
             string accessToken = GenerateAccessToken(createdUser);
 
             return Json(new AuthResponse(accessToken));
+        }
+
+        /// <summary>
+        /// Call this endpoint to receive basic information about a user
+        /// Authorize http header required
+        /// </summary>
+        [HttpPost]
+        [Route("get-user-info")]
+        [AuthorizeRoles(Role.Admin, Role.User)]
+        public async Task<IActionResult> GetUserInfo()
+        {
+            Guid id = User.GetId();
+            User user = await userService.GetById(id);
+            if(user == null)
+            {
+                return StatusCode(500, new ErrorResponseModel("User not found"));
+            }
+            UserDTO userDTO = mapper.Map<User, UserDTO>(user);
+            return Json(userDTO);
         }
     }
 }

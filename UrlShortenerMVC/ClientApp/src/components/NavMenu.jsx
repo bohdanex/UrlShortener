@@ -2,10 +2,21 @@ import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
+import { Dispatch } from 'redux';
+import {JWT_STORAGE_KEY} from '../constants'
+import { RootState } from '../store'
+import {addUser} from '../store/features/userSlice'
+import { connect } from 'react-redux';
+import { User } from '../types/Users';
+import { getUserInfo } from './auth/authActions'
+import storage from 'react-secure-storage'
 
-export class NavMenu extends Component {
-  static displayName = NavMenu.name;
+type Props = {
+  dispatch: Dispatch,
+  user: User
+}
 
+class NavMenu extends Component<Props> {
   constructor (props) {
     super(props);
 
@@ -13,6 +24,18 @@ export class NavMenu extends Component {
     this.state = {
       collapsed: true
     };
+  }
+
+  async componentDidMount(){
+    const accessToken = storage.getItem(JWT_STORAGE_KEY);
+    if(accessToken != null){
+      try{
+        user = await getUserInfo(accessToken);
+        this.props.dispatch(addUser(user))
+      }
+      catch(error){
+      }
+    }
   }
 
   toggleNavbar () {
@@ -47,3 +70,8 @@ export class NavMenu extends Component {
     );
   }
 }
+const mapStateToProps = (state: RootState) => ({
+  user: state.user.user
+});
+
+export default connect(mapStateToProps, {addUser})(NavMenu)

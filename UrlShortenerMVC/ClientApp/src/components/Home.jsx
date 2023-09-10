@@ -2,11 +2,23 @@ import React, { Component } from 'react';
 import URLTable from './url/URLTable';
 import { TableUrl } from '../types/UrlTypes';
 import { getAll } from './url/urlActinos';
+import { getUserInfo } from './auth/authActions'
+import Notifications from '../services/notificationService'
+import {JWT_STORAGE_KEY} from '../constants'
+import storage from 'react-secure-storage'
+import { RootState } from '../store';
+import { connect } from 'react-redux';
+
+const notifications = new Notifications();
 
 type State = {
   urls: Array<TableUrl>
 }
-export class Home extends Component {
+type Props = {
+  user: User
+}
+
+export class Home extends Component<Props, State> {
 
   constructor(props){
     super(props)
@@ -15,8 +27,9 @@ export class Home extends Component {
       urls: []
     }
   }
-  componentDidMount(){
-    getAll().then(urls=>this.setState({urls}))
+  async componentDidMount(){
+    const urls = await getAll();
+    this.setState({urls});
   }
   
   render () {
@@ -28,3 +41,9 @@ export class Home extends Component {
     );
   }
 }
+
+const mapStateToProps = (state: RootState) => ({
+  user: state.user.user
+});
+
+export default connect(mapStateToProps)(Home)
